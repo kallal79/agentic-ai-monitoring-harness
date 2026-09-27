@@ -1,0 +1,35 @@
+{
+  "trace_id": "trace_10_tool_misuse_hallucinated_tool",
+  "goal": "Optimize database performance index.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "I will invoke the automated AI database optimizer tool.",
+      "action": "Run deep index optimizer.",
+      "tool_call": {
+        "tool_name": "auto_index_neural_optimizer",
+        "parameters": {
+          "table": "orders",
+          "aggressiveness": "high"
+        }
+      },
+      "observation": "ToolNotFoundError: 'auto_index_neural_optimizer' is not recognized.",
+      "timestamp": null
+    }
+  ],
+  "final_response": "Could not optimize index because tool was not found.",
+  "metadata": {
+    "agent_id": "dba-agent",
+    "agent_name": "Autonomous Assistant",
+    "domain": "general",
+    "allowed_tools": null,
+    "security_policy": null
+  },
+  "ground_truth": {
+    "is_passing": false,
+    "failures": [
+      "tool_misuse"
+    ],
+    "notes": "Agent hallucinated and invoked an unregistered tool name not present in system catalog."
+  }
+}

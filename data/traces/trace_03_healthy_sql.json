@@ -1,0 +1,46 @@
+{
+  "trace_id": "trace_03_healthy_sql",
+  "goal": "Calculate total Q3 regional sales and identify the top performing region.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "I will run a SQL aggregate query on the sales_orders table filtered for Q3.",
+      "action": "Execute SQL aggregate query.",
+      "tool_call": {
+        "tool_name": "sql_query",
+        "parameters": {
+          "query": "SELECT region, SUM(amount) as total_sales FROM sales_orders WHERE quarter = 'Q3' GROUP BY region ORDER BY total_sales DESC;",
+          "database": "analytics_dw"
+        }
+      },
+      "observation": "[{\"region\": \"North America\", \"total_sales\": 4200000}, {\"region\": \"Europe\", \"total_sales\": 3100000}, {\"region\": \"Asia-Pacific\", \"total_sales\": 2800000}]",
+      "timestamp": null
+    },
+    {
+      "step_index": 2,
+      "thought": "North America has 4,200,000, Europe has 3,100,000, and Asia-Pacific has 2,800,000. Total is 10,100,000.",
+      "action": "Calculate total sum across regions.",
+      "tool_call": {
+        "tool_name": "calculate",
+        "parameters": {
+          "expression": "4200000 + 3100000 + 2800000"
+        }
+      },
+      "observation": "10100000",
+      "timestamp": null
+    }
+  ],
+  "final_response": "Based on the analytics database records, total Q3 regional sales reached 10,100,000 across all regions. The top performing region was North America with total sales of 4,200,000, followed by Europe at 3,100,000, and Asia-Pacific at 2,800,000.",
+  "metadata": {
+    "agent_id": "sql-agent-dw",
+    "agent_name": "Autonomous Assistant",
+    "domain": "finance",
+    "allowed_tools": null,
+    "security_policy": null
+  },
+  "ground_truth": {
+    "is_passing": true,
+    "failures": [],
+    "notes": "Healthy data retrieval and arithmetic: queries grounded in DB result, no fabricated numbers."
+  }
+}

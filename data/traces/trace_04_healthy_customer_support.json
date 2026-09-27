@@ -1,0 +1,32 @@
+{
+  "trace_id": "trace_04_healthy_customer_support",
+  "goal": "Lookup customer CUST-9021 and retrieve recent open billing inquiries.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "I need to fetch the customer profile and ticket history for CUST-9021.",
+      "action": "Lookup customer CRM profile.",
+      "tool_call": {
+        "tool_name": "customer_crm_lookup",
+        "parameters": {
+          "customer_id": "CUST-9021"
+        }
+      },
+      "observation": "{\"customer_id\": \"CUST-9021\", \"name\": \"Elena Rostova\", \"plan\": \"Enterprise\", \"open_tickets\": [{\"ticket_id\": \"TCK-551\", \"category\": \"billing\", \"status\": \"pending_finance_review\", \"created_at\": \"2026-09-25\"}]}",
+      "timestamp": null
+    }
+  ],
+  "final_response": "Customer CUST-9021 (Elena Rostova, Enterprise Plan) has one open billing ticket: TCK-551 submitted on 2026-09-25, currently with status 'pending_finance_review'.",
+  "metadata": {
+    "agent_id": "support-bot",
+    "agent_name": "Autonomous Assistant",
+    "domain": "crm",
+    "allowed_tools": null,
+    "security_policy": null
+  },
+  "ground_truth": {
+    "is_passing": true,
+    "failures": [],
+    "notes": "Accurate CRM retrieval, perfectly grounded synthesis."
+  }
+}

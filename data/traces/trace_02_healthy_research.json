@@ -1,0 +1,41 @@
+{
+  "trace_id": "trace_02_healthy_research",
+  "goal": "Explain the concept of quantum superposition and how qubits differ from classical bits.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "I should search for peer-reviewed explanations of quantum superposition and mathematical representations of qubits.",
+      "action": "Search web for quantum superposition overview.",
+      "tool_call": {
+        "tool_name": "web_search",
+        "parameters": {
+          "query": "quantum superposition qubit state bloch sphere",
+          "max_results": 3
+        }
+      },
+      "observation": "A classical bit must be in state 0 or 1. A qubit state can be represented as a linear combination |psi> = alpha|0> + beta|1>, where |alpha|^2 + |beta|^2 = 1. Quantum superposition allows quantum computers to evaluate complex Hilbert spaces simultaneously.",
+      "timestamp": null
+    },
+    {
+      "step_index": 2,
+      "thought": "The retrieved text describes the state vector equation. Let me synthesize a clear, grounded explanation for the user.",
+      "action": "Synthesize explanation based on retrieved reference.",
+      "tool_call": null,
+      "observation": "Synthesized grounded overview.",
+      "timestamp": null
+    }
+  ],
+  "final_response": "Unlike a classical bit that exists deterministically as 0 or 1, a qubit exists in a superposition of states represented as |psi> = alpha|0> + beta|1>, with probability amplitudes satisfying |alpha|^2 + |beta|^2 = 1. Upon measurement, the superposition collapses into one of the basis states.",
+  "metadata": {
+    "agent_id": "research-agent-01",
+    "agent_name": "Autonomous Assistant",
+    "domain": "science",
+    "allowed_tools": null,
+    "security_policy": null
+  },
+  "ground_truth": {
+    "is_passing": true,
+    "failures": [],
+    "notes": "Healthy factual research: search results used accurately, mathematical claim grounded."
+  }
+}

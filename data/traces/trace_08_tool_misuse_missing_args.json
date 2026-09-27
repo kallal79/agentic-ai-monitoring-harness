@@ -1,0 +1,34 @@
+{
+  "trace_id": "trace_08_tool_misuse_missing_args",
+  "goal": "Execute database query to fetch customer transaction records.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "I will invoke sql_query to fetch the transactions.",
+      "action": "Execute SQL query.",
+      "tool_call": {
+        "tool_name": "sql_query",
+        "parameters": {
+          "database": "transactions_db"
+        }
+      },
+      "observation": "{\"error\": \"Missing parameter 'query'\"}",
+      "timestamp": null
+    }
+  ],
+  "final_response": "Could not fetch transactions due to missing query argument.",
+  "metadata": {
+    "agent_id": "db-assistant",
+    "agent_name": "Autonomous Assistant",
+    "domain": "general",
+    "allowed_tools": null,
+    "security_policy": null
+  },
+  "ground_truth": {
+    "is_passing": false,
+    "failures": [
+      "tool_misuse"
+    ],
+    "notes": "Agent called sql_query without providing mandatory required 'query' parameter."
+  }
+}

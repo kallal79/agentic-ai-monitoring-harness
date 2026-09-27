@@ -1,0 +1,34 @@
+{
+  "trace_id": "trace_09_tool_misuse_invalid_schema",
+  "goal": "Fetch API documentation from developer portal.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "I will fetch the developer docs using the portal URL.",
+      "action": "Fetch URL with placeholder token.",
+      "tool_call": {
+        "tool_name": "fetch_url",
+        "parameters": {
+          "url": "<INSERT_API_DOCS_URL>"
+        }
+      },
+      "observation": "{\"error\": \"Invalid URL format\"}",
+      "timestamp": null
+    }
+  ],
+  "final_response": "Failed to load API docs.",
+  "metadata": {
+    "agent_id": "web-bot",
+    "agent_name": "Autonomous Assistant",
+    "domain": "general",
+    "allowed_tools": null,
+    "security_policy": null
+  },
+  "ground_truth": {
+    "is_passing": false,
+    "failures": [
+      "tool_misuse"
+    ],
+    "notes": "Agent passed unpopulated template placeholder '<INSERT_API_DOCS_URL>' into fetch_url."
+  }
+}

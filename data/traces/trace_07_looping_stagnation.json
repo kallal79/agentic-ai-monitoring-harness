@@ -1,0 +1,49 @@
+{
+  "trace_id": "trace_07_looping_stagnation",
+  "goal": "Diagnose why server CPU usage is spiking.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "I need to check the server cpu metrics and analyze what processes are consuming high compute cycles on the host.",
+      "action": "Check CPU metrics.",
+      "tool_call": {
+        "tool_name": "server_metrics",
+        "parameters": {
+          "metric_name": "cpu_utilization",
+          "timeframe": "1h"
+        }
+      },
+      "observation": "CPU Utilization: 92% average over last hour.",
+      "timestamp": null
+    },
+    {
+      "step_index": 2,
+      "thought": "I need to check the server cpu metrics and analyze what processes are consuming high compute cycles on the host.",
+      "action": "Re-check CPU metrics.",
+      "tool_call": {
+        "tool_name": "server_metrics",
+        "parameters": {
+          "metric_name": "cpu_utilization",
+          "timeframe": "1h"
+        }
+      },
+      "observation": "CPU Utilization: 92% average over last hour.",
+      "timestamp": null
+    }
+  ],
+  "final_response": "CPU utilization is 92%.",
+  "metadata": {
+    "agent_id": "monitoring-bot",
+    "agent_name": "Autonomous Assistant",
+    "domain": "general",
+    "allowed_tools": null,
+    "security_policy": null
+  },
+  "ground_truth": {
+    "is_passing": false,
+    "failures": [
+      "looping"
+    ],
+    "notes": "Semantic thought stagnation: identical cognitive reasoning repeated across steps without progress."
+  }
+}
