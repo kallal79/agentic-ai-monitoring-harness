@@ -6,7 +6,7 @@
   <title>Agentic AI Monitoring Harness | Observability & Evaluation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -15,37 +15,51 @@
     <div class="header-inner">
       <div class="brand">
         <div class="brand-icon">
-          <div class="pulse-ring"></div>
-          <span class="icon-symbol">⟁</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
         </div>
         <div class="brand-text">
           <h1>Agentic AI Monitor</h1>
-          <span class="brand-tag">Autonomous Agent Observability & Safety Harness</span>
+          <span class="brand-tag">Behavioral Observability & Safety Harness</span>
         </div>
       </div>
 
       <nav class="nav-tabs">
         <button class="nav-tab active" data-tab="tab-overview" id="btn-tab-overview">
-          <span class="tab-icon">📊</span> Overview
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          Overview
         </button>
         <button class="nav-tab" data-tab="tab-traces" id="btn-tab-traces">
-          <span class="tab-icon">🔍</span> Trace Explorer <span class="badge-count" id="nav-trace-count">20</span>
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          Trace Explorer <span class="badge-count" id="nav-trace-count">20</span>
         </button>
         <button class="nav-tab" data-tab="tab-playground" id="btn-tab-playground">
-          <span class="tab-icon">⚡</span> Live Playground
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          Live Playground
         </button>
         <button class="nav-tab" data-tab="tab-tools" id="btn-tab-tools">
-          <span class="tab-icon">🛠️</span> Tool Catalog
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+          Tool Catalog
         </button>
       </nav>
 
       <div class="header-actions">
         <div class="status-indicator">
           <span class="pulse-dot"></span>
-          <span class="status-text">Engine Active</span>
+          <span class="status-text">Engine Ready</span>
         </div>
         <button class="btn btn-secondary btn-sm" id="btn-refresh" title="Reload Evaluation Data">
-          🔄 Refresh
+          Refresh
         </button>
       </div>
     </div>
@@ -57,68 +71,68 @@
       <!-- KPI Stats -->
       <div class="kpi-row">
         <div class="kpi-card" id="kpi-traces">
-          <div class="kpi-icon">📁</div>
-          <div class="kpi-meta">
+          <div class="kpi-top">
             <span class="kpi-label">Evaluated Traces</span>
-            <span class="kpi-value" id="kpi-total-traces">20</span>
+            <span class="kpi-badge">Benchmark</span>
           </div>
-          <div class="kpi-sub">Across 5 domains</div>
+          <div class="kpi-value" id="kpi-total-traces">20</div>
+          <div class="kpi-sub">Spanning 5 core domains</div>
         </div>
 
         <div class="kpi-card" id="kpi-pass-rate">
-          <div class="kpi-icon">🛡️</div>
-          <div class="kpi-meta">
-            <span class="kpi-label">Pass Rate</span>
-            <span class="kpi-value" id="kpi-pass-rate-val">20.0%</span>
+          <div class="kpi-top">
+            <span class="kpi-label">Benchmark Pass Rate</span>
+            <span class="kpi-badge">Multi-Pillar</span>
           </div>
-          <div class="kpi-sub">Strict multi-pillar criteria</div>
+          <div class="kpi-value" id="kpi-pass-rate-val">20.0%</div>
+          <div class="kpi-sub">4 healthy / 16 failure traces</div>
         </div>
 
         <div class="kpi-card highlight-cyan" id="kpi-precision">
-          <div class="kpi-icon">🎯</div>
-          <div class="kpi-meta">
+          <div class="kpi-top">
             <span class="kpi-label">Macro Precision</span>
-            <span class="kpi-value" id="kpi-macro-p">100.0%</span>
+            <span class="kpi-badge badge-cyan">100% Target</span>
           </div>
-          <div class="kpi-sub">Zero false positive flags</div>
+          <div class="kpi-value" id="kpi-macro-p">100.0%</div>
+          <div class="kpi-sub">Zero false positive alarms</div>
         </div>
 
         <div class="kpi-card highlight-purple" id="kpi-recall">
-          <div class="kpi-icon">📡</div>
-          <div class="kpi-meta">
+          <div class="kpi-top">
             <span class="kpi-label">Macro Recall</span>
-            <span class="kpi-value" id="kpi-macro-r">100.0%</span>
+            <span class="kpi-badge badge-purple">100% Target</span>
           </div>
-          <div class="kpi-sub">100% anomaly detection</div>
+          <div class="kpi-value" id="kpi-macro-r">100.0%</div>
+          <div class="kpi-sub">All injected failures detected</div>
         </div>
 
         <div class="kpi-card highlight-emerald" id="kpi-f1">
-          <div class="kpi-icon">⭐</div>
-          <div class="kpi-meta">
+          <div class="kpi-top">
             <span class="kpi-label">Macro F1-Score</span>
-            <span class="kpi-value" id="kpi-macro-f1">1.000</span>
+            <span class="kpi-badge badge-emerald">Harmonic</span>
           </div>
-          <div class="kpi-sub">Balanced harmonic mean</div>
+          <div class="kpi-value" id="kpi-macro-f1">1.000</div>
+          <div class="kpi-sub">Balanced detection accuracy</div>
         </div>
 
         <div class="kpi-card" id="kpi-latency">
-          <div class="kpi-icon">⚡</div>
-          <div class="kpi-meta">
-            <span class="kpi-label">Avg Trace Latency</span>
-            <span class="kpi-value" id="kpi-avg-latency">0.24 ms</span>
+          <div class="kpi-top">
+            <span class="kpi-label">Mean Latency</span>
+            <span class="kpi-badge">Sub-ms</span>
           </div>
-          <div class="kpi-sub">Sub-millisecond inference</div>
+          <div class="kpi-value" id="kpi-avg-latency">0.24 ms</div>
+          <div class="kpi-sub">Deterministic local engine</div>
         </div>
       </div>
 
       <!-- Detector Performance Cards -->
       <div class="section-header">
         <div>
-          <h2>Detector Suites & Coverage Benchmark</h2>
-          <p class="section-desc">Performance metrics across all 5 monitored failure categories evaluated on labeled synthetic test set.</p>
+          <h2>Monitored Failure Categories</h2>
+          <p class="section-desc">Performance metrics across all 5 monitored failure categories evaluated on ground truth labeled test traces.</p>
         </div>
         <div class="accuracy-pill">
-          <span>Overall Classification Accuracy:</span> <strong id="overall-accuracy">100.0%</strong>
+          <span>Binary Pass/Fail Accuracy:</span> <strong id="overall-accuracy">100.0%</strong>
         </div>
       </div>
 
@@ -129,8 +143,10 @@
       <!-- Benchmark Summary Table -->
       <div class="card table-card">
         <div class="card-header">
-          <h3>Ground Truth Evaluation Matrix</h3>
-          <span class="card-hint">True Positives (TP), False Positives (FP), False Negatives (FN), True Negatives (TN)</span>
+          <div>
+            <h3>Ground Truth Evaluation Matrix</h3>
+            <span class="card-hint">True Positives (TP), False Positives (FP), False Negatives (FN), True Negatives (TN)</span>
+          </div>
         </div>
         <div class="table-container">
           <table class="data-table" id="benchmark-matrix-table">
@@ -161,7 +177,9 @@
       <div class="explorer-header">
         <div class="filter-controls">
           <div class="search-box">
-            <span class="search-icon">🔍</span>
+            <svg class="search-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
             <input type="text" id="trace-search" placeholder="Search by trace ID, goal, or issue..." autocomplete="off">
           </div>
 
@@ -191,11 +209,11 @@
           <table class="data-table" id="traces-table">
             <thead>
               <tr>
-                <th>Trace Identifier</th>
+                <th>Trace ID</th>
                 <th>Goal Objective</th>
                 <th>Steps</th>
                 <th>Status</th>
-                <th>Composite Score</th>
+                <th>Score</th>
                 <th>Pillar Breakdown</th>
                 <th>Detected Issues</th>
                 <th>Ground Truth</th>
@@ -217,12 +235,12 @@
           <div class="card-header">
             <div>
               <h3>Trace Ingestion Editor</h3>
-              <p class="section-desc">Paste an agent trace JSON to evaluate in real-time.</p>
+              <p class="section-desc">Paste or select an agent execution trace to evaluate in real-time.</p>
             </div>
             <div class="template-selector">
-              <label for="template-select">Load Preset:</label>
+              <label for="template-select">Preset:</label>
               <select id="template-select">
-                <option value="">-- Choose Example --</option>
+                <option value="">-- Choose Preset --</option>
                 <option value="healthy_devops">Healthy DevOps Run</option>
                 <option value="looping_search">Looping / Repetition</option>
                 <option value="tool_misuse">Tool Misuse (Schema Breach)</option>
@@ -238,9 +256,9 @@
           </div>
           <div class="card-footer">
             <button class="btn btn-primary" id="btn-eval-trace">
-              ⚡ Run Real-Time Evaluation
+              Run Real-Time Evaluation
             </button>
-            <span class="editor-hint">Supports thought, action, tool_call, and observation schema.</span>
+            <span class="editor-hint">Strict schema validation: thoughts, actions, tool_call, and observations.</span>
           </div>
         </div>
 
@@ -251,8 +269,14 @@
           </div>
           <div id="playground-results-container" class="playground-empty">
             <div class="empty-state">
-              <span class="empty-icon">📊</span>
-              <p>Select a preset or paste trace JSON and click <strong>Run Real-Time Evaluation</strong> to inspect behavioral safety.</p>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+              <p>Select a preset or paste trace JSON and click <strong>Run Real-Time Evaluation</strong> to inspect behavioral safety and reliability.</p>
             </div>
           </div>
         </div>
@@ -264,7 +288,7 @@
       <div class="section-header">
         <div>
           <h2>Registered Tool Catalog & Schema Specifications</h2>
-          <p class="section-desc">Tools monitored by the harness. Tool invocations outside these schemas or containing invalid arguments are flagged.</p>
+          <p class="section-desc">Tool signatures verified by the monitoring harness. Invocations violating these specifications are flagged as Tool Misuse.</p>
         </div>
       </div>
       <div class="tools-grid" id="tools-grid">
@@ -302,21 +326,21 @@
               <div class="pillar-bars">
                 <div class="pillar-bar-item">
                   <div class="pillar-info">
-                    <span>Reliability</span>
+                    <span>Reliability (40%)</span>
                     <strong id="modal-p-rel">100/100</strong>
                   </div>
                   <div class="bar-track"><div class="bar-fill cyan" id="modal-bar-rel" style="width: 100%;"></div></div>
                 </div>
                 <div class="pillar-bar-item">
                   <div class="pillar-info">
-                    <span>Safety</span>
+                    <span>Safety (35%)</span>
                     <strong id="modal-p-safe">100/100</strong>
                   </div>
                   <div class="bar-track"><div class="bar-fill emerald" id="modal-bar-safe" style="width: 100%;"></div></div>
                 </div>
                 <div class="pillar-bar-item">
                   <div class="pillar-info">
-                    <span>Factuality</span>
+                    <span>Factuality (25%)</span>
                     <strong id="modal-p-fact">100/100</strong>
                   </div>
                   <div class="bar-track"><div class="bar-fill purple" id="modal-bar-fact" style="width: 100%;"></div></div>
@@ -332,14 +356,14 @@
             </div>
 
             <div class="sidebar-section">
-              <h4>Scoring Rationale</h4>
+              <h4>Scoring Deduction Ledger</h4>
               <p class="explanation-text" id="modal-explanation">Trace passed with perfect 100/100 score.</p>
             </div>
           </div>
 
           <!-- Right Column: Trajectory Timeline -->
           <div class="inspector-main">
-            <h3>Agent Trajectory Step-by-Step</h3>
+            <h3>Step-by-Step Trajectory Timeline</h3>
             <div class="trajectory-timeline" id="modal-timeline">
               <!-- Steps rendered dynamically -->
             </div>

@@ -41,6 +41,8 @@ class TraceStep(BaseModel):
     tool_call: Optional[ToolCall] = None
     observation: Optional[Union[str, Dict[str, Any], List[Any], int, float, bool]] = None
     timestamp: Optional[str] = None
+    step_duration_ms: Optional[float] = None
+    tokens_used: Optional[Dict[str, int]] = None
 
 
 class GroundTruth(BaseModel):
@@ -55,6 +57,9 @@ class TraceMetadata(BaseModel):
     agent_id: Optional[str] = "agent-generic"
     agent_name: Optional[str] = "Autonomous Assistant"
     domain: Optional[str] = "general"
+    model_name: Optional[str] = "gpt-4o"
+    framework: Optional[str] = "langchain-react"
+    total_tokens: Optional[int] = None
     allowed_tools: Optional[List[str]] = None
     security_policy: Optional[Dict[str, Any]] = None
 

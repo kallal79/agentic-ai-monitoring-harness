@@ -13,15 +13,20 @@
           "aggressiveness": "high"
         }
       },
-      "observation": "ToolNotFoundError: 'auto_index_neural_optimizer' is not recognized.",
-      "timestamp": null
+      "observation": "ToolNotFoundError: 'auto_index_neural_optimizer' is not registered in the agent catalog.",
+      "timestamp": "2026-09-27T08:23:01.300Z",
+      "step_duration_ms": null,
+      "tokens_used": null
     }
   ],
-  "final_response": "Could not optimize index because tool was not found.",
+  "final_response": "Could not optimize index because tool was not recognized.",
   "metadata": {
     "agent_id": "dba-agent",
     "agent_name": "Autonomous Assistant",
-    "domain": "general",
+    "domain": "database",
+    "model_name": "gpt-4o",
+    "framework": "langchain-react",
+    "total_tokens": null,
     "allowed_tools": null,
     "security_policy": null
   },
@@ -30,6 +35,6 @@
     "failures": [
       "tool_misuse"
     ],
-    "notes": "Agent hallucinated and invoked an unregistered tool name not present in system catalog."
+    "notes": "Agent hallucinated a nonexistent tool name 'auto_index_neural_optimizer'."
   }
 }

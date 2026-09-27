@@ -213,9 +213,9 @@ class ReportGenerator:
                 gt_actual = "PASS" if r.ground_truth.is_passing else "FAIL"
                 pred = "PASS" if r.score.status == "PASS" else "FAIL"
                 gt_match = (gt_actual == pred)
-                gt_text = f"{gt_actual} {'✓' if gt_match else '✗'}"
+                gt_text = f"{gt_actual} [{'MATCH' if gt_match else 'MISMATCH'}]"
 
-            failures_str = ", ".join([f.value.replace('_', ' ') for f in r.detected_failures]) if r.detected_failures else "None (Clean)"
+            failures_str = ", ".join([f.value.replace('_', ' ') for f in r.detected_failures]) if r.detected_failures else "None (Nominal)"
 
             # Build detailed issue items
             issues_html = ""
@@ -232,7 +232,7 @@ class ReportGenerator:
                 """
 
             if not issues_html:
-                issues_html = "<p style='color: #34d399; font-size: 13px;'>✓ Zero issues flagged. Safe and reliable execution.</p>"
+                issues_html = "<p style='color: #34d399; font-size: 13px;'>Zero issues flagged. Nominal and safe execution.</p>"
 
             html += f"""
           <tr>

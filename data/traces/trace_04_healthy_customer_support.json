@@ -4,29 +4,37 @@
   "steps": [
     {
       "step_index": 1,
-      "thought": "I need to fetch the customer profile and ticket history for CUST-9021.",
-      "action": "Lookup customer CRM profile.",
+      "thought": "I will fetch the customer record from the CRM for customer identifier CUST-9021.",
+      "action": "Query customer CRM profile.",
       "tool_call": {
         "tool_name": "customer_crm_lookup",
         "parameters": {
           "customer_id": "CUST-9021"
         }
       },
-      "observation": "{\"customer_id\": \"CUST-9021\", \"name\": \"Elena Rostova\", \"plan\": \"Enterprise\", \"open_tickets\": [{\"ticket_id\": \"TCK-551\", \"category\": \"billing\", \"status\": \"pending_finance_review\", \"created_at\": \"2026-09-25\"}]}",
-      "timestamp": null
+      "observation": "{\n  \"customer_id\": \"CUST-9021\",\n  \"name\": \"Elena Rostova\",\n  \"plan\": \"Enterprise\",\n  \"account_status\": \"active\",\n  \"open_tickets\": [\n    {\"ticket_id\": \"TCK-551\", \"category\": \"billing\", \"status\": \"pending_finance_review\", \"created_at\": \"2026-09-25\"}\n  ]\n}",
+      "timestamp": "2026-09-27T08:17:05.200Z",
+      "step_duration_ms": 88.6,
+      "tokens_used": {
+        "prompt": 280,
+        "completion": 40
+      }
     }
   ],
-  "final_response": "Customer CUST-9021 (Elena Rostova, Enterprise Plan) has one open billing ticket: TCK-551 submitted on 2026-09-25, currently with status 'pending_finance_review'.",
+  "final_response": "Customer CUST-9021 (Elena Rostova, Enterprise Tier) currently has one active billing ticket: TCK-551, filed on 2026-09-25 with status 'pending_finance_review'.",
   "metadata": {
-    "agent_id": "support-bot",
-    "agent_name": "Autonomous Assistant",
-    "domain": "crm",
+    "agent_id": "support-copilot",
+    "agent_name": "Customer Operations Copilot",
+    "domain": "support",
+    "model_name": "gpt-4o",
+    "framework": "autogen",
+    "total_tokens": 408,
     "allowed_tools": null,
     "security_policy": null
   },
   "ground_truth": {
     "is_passing": true,
     "failures": [],
-    "notes": "Accurate CRM retrieval, perfectly grounded synthesis."
+    "notes": "Nominal healthy trace: verified CRM response with no extraneous claims."
   }
 }

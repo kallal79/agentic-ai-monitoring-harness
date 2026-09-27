@@ -4,38 +4,51 @@
   "steps": [
     {
       "step_index": 1,
-      "thought": "I should search for peer-reviewed explanations of quantum superposition and mathematical representations of qubits.",
-      "action": "Search web for quantum superposition overview.",
+      "thought": "The user is asking for the mathematical and conceptual differences between classical bits and qubits. I will retrieve foundational quantum physics principles.",
+      "action": "Search authoritative quantum computing reference.",
       "tool_call": {
         "tool_name": "web_search",
         "parameters": {
-          "query": "quantum superposition qubit state bloch sphere",
+          "query": "quantum superposition qubit state vector bloch sphere",
           "max_results": 3
         }
       },
-      "observation": "A classical bit must be in state 0 or 1. A qubit state can be represented as a linear combination |psi> = alpha|0> + beta|1>, where |alpha|^2 + |beta|^2 = 1. Quantum superposition allows quantum computers to evaluate complex Hilbert spaces simultaneously.",
-      "timestamp": null
+      "observation": "A classical bit has two distinct discrete states: 0 or 1. A qubit state |psi> can be represented as a linear superposition |psi> = alpha|0> + beta|1>, where alpha and beta are complex probability amplitudes satisfying |alpha|^2 + |beta|^2 = 1. Geometrically, any pure qubit state maps to a point on the surface of the Bloch sphere, parameterised by angles theta and phi.",
+      "timestamp": "2026-09-27T08:15:10.040Z",
+      "step_duration_ms": 380.1,
+      "tokens_used": {
+        "prompt": 210,
+        "completion": 45
+      }
     },
     {
       "step_index": 2,
-      "thought": "The retrieved text describes the state vector equation. Let me synthesize a clear, grounded explanation for the user.",
-      "action": "Synthesize explanation based on retrieved reference.",
+      "thought": "The retrieved text defines state vector |psi> and normalisation condition. I will synthesize an objective, mathematically rigorous explanation.",
+      "action": "Synthesize grounded answer.",
       "tool_call": null,
-      "observation": "Synthesized grounded overview.",
-      "timestamp": null
+      "observation": "Synthesis prepared based on verified state equation.",
+      "timestamp": "2026-09-27T08:15:12.300Z",
+      "step_duration_ms": 120.0,
+      "tokens_used": {
+        "prompt": 380,
+        "completion": 140
+      }
     }
   ],
-  "final_response": "Unlike a classical bit that exists deterministically as 0 or 1, a qubit exists in a superposition of states represented as |psi> = alpha|0> + beta|1>, with probability amplitudes satisfying |alpha|^2 + |beta|^2 = 1. Upon measurement, the superposition collapses into one of the basis states.",
+  "final_response": "Unlike a classical bit which is deterministically constrained to either state 0 or state 1, a qubit exists in a coherent superposition |psi> = alpha|0> + beta|1>, where alpha and beta are complex numbers such that |alpha|^2 + |beta|^2 = 1. Measurement causes the state vector to collapse probabilistically into one of the orthogonal computational basis states with probabilities |alpha|^2 and |beta|^2 respectively.",
   "metadata": {
-    "agent_id": "research-agent-01",
-    "agent_name": "Autonomous Assistant",
+    "agent_id": "research-scholar",
+    "agent_name": "Scientific Literature Assistant",
     "domain": "science",
+    "model_name": "gpt-4o",
+    "framework": "langgraph",
+    "total_tokens": 775,
     "allowed_tools": null,
     "security_policy": null
   },
   "ground_truth": {
     "is_passing": true,
     "failures": [],
-    "notes": "Healthy factual research: search results used accurately, mathematical claim grounded."
+    "notes": "Nominal healthy trace: factual claim strictly derived from observation with accurate mathematical notation."
   }
 }

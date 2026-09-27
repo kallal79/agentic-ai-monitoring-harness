@@ -1,6 +1,7 @@
 /**
  * dashboard/static/app.js
  * Client logic for Agentic AI Monitoring Dashboard
+ * Clean, engineering-focused observability interface without artificial gimmicks.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -63,11 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
     detectorsGrid.innerHTML = "";
 
     const detectorDescriptions = {
-      looping: "Detects repetitive calls, multi-step Ping-Pong cycles, and cognitive stagnation.",
-      tool_misuse: "Validates JSON schemas, parameter types, missing mandatory keys, and placeholders.",
-      hallucination: "Verifies claims & numerical figures against tool observation corpus for grounding.",
-      goal_drift: "Monitors semantic relevance of actions/thoughts to the initial stated user goal.",
-      unsafe_action: "Enforces security policies against destructive commands, leaks, and prompt injection.",
+      looping: "Detects repetitive identical tool calls, Ping-Pong oscillation cycles (A -> B -> A -> B), and cognitive thought stagnation.",
+      tool_misuse: "Validates JSON schemas, parameter types, missing mandatory keys, unpopulated placeholders (<...>), and unregistered tool names.",
+      hallucination: "Verifies claims and metrics against the tool observation corpus, detecting unsupported facts and contradictions.",
+      goal_drift: "Monitors topical cosine relevance between initial goal vector and intermediate steps, catching task diversion.",
+      unsafe_action: "Enforces security policies against destructive commands (rm -rf), credential leaks (.env, /etc/shadow), and indirect prompt injections.",
     };
 
     for (const [catKey, m] of Object.entries(data.category_metrics || {})) {
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="stat-val">${m.tp}</span>
           </div>
           <div class="detector-stat">
-            <span class="stat-label">Support</span>
+            <span class="stat-label">GT Support</span>
             <span class="stat-val">${m.support}</span>
           </div>
         </div>
@@ -167,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">No traces match the selected filters.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 32px;">No traces match the active filters.</td></tr>`;
       return;
     }
 
@@ -191,11 +192,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const actualPass = t.ground_truth.is_passing ? "PASS" : "FAIL";
         const predPass = t.score.status === "PASS" ? "PASS" : "FAIL";
         gtMatch = actualPass === predPass;
-        gtText = `${actualPass} ${gtMatch ? "✓" : "✗"}`;
+        gtText = `${actualPass} [${gtMatch ? "MATCH" : "MISMATCH"}]`;
       }
 
       tr.innerHTML = `
-        <td><code style="color: var(--accent-cyan);">${t.trace_id}</code></td>
+        <td><code style="color: var(--accent-cyan); font-weight: 500;">${t.trace_id}</code></td>
         <td style="max-width: 280px; font-size: 12px; color: #cbd5e1;">${escapeHtml(t.goal)}</td>
         <td>${t.step_count}</td>
         <td><span class="badge-status ${statusCls}">${t.score.status}</span></td>
@@ -207,8 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="pillar-chip">Fact: ${t.score.factuality_score}</span>
           </div>
         </td>
-        <td>${failuresList || '<span style="color: #34d399; font-size: 11px;">✓ Clean</span>'}</td>
-        <td><span style="color: ${gtMatch ? '#34d399' : '#fb7185'}; font-weight: 600;">${gtText}</span></td>
+        <td>${failuresList || '<span style="color: #34d399; font-size: 11px;">Nominal Clean</span>'}</td>
+        <td><span style="color: ${gtMatch ? '#34d399' : '#fb7185'}; font-size: 11px; font-weight: 600;">${gtText}</span></td>
         <td>
           <button class="btn btn-secondary btn-sm inspect-btn" data-id="${t.trace_id}">
             Inspect
@@ -293,9 +294,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (raw_trace.ground_truth) {
         const gt = raw_trace.ground_truth;
         gtBox.innerHTML = `
-          <p><strong>Expected Passing:</strong> ${gt.is_passing ? 'Yes (Clean)' : 'No (Failure)'}</p>
-          <p><strong>Expected Failures:</strong> ${gt.failures.length ? gt.failures.join(', ') : 'None'}</p>
-          <p style="margin-top: 4px; color: var(--text-muted); font-style: italic;">"${gt.notes || ''}"</p>
+          <div style="margin-bottom: 4px;"><strong>Target Classification:</strong> ${gt.is_passing ? 'PASS' : 'FAIL'}</div>
+          <div style="margin-bottom: 4px;"><strong>Target Failures:</strong> ${gt.failures.length ? gt.failures.join(', ') : 'None (Healthy)'}</div>
+          <div style="margin-top: 6px; color: var(--text-muted); font-size: 11px; line-height: 1.4;">${escapeHtml(gt.notes || '')}</div>
         `;
       } else {
         gtBox.innerHTML = `<p style="color: var(--text-muted);">No ground truth annotations attached.</p>`;
@@ -316,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (step.tool_call) {
           toolHtml = `
             <div class="tool-call-box">
-              <span class="tool-name-tag">🔧 ${step.tool_call.tool_name}</span>
+              <span class="tool-name-tag">[TOOL CALL] ${step.tool_call.tool_name}()</span>
               <pre style="margin-top: 4px; font-size: 11px; color: #a5b4fc;">${escapeHtml(JSON.stringify(step.tool_call.parameters, null, 2))}</pre>
             </div>
           `;
@@ -325,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let obsHtml = "";
         if (step.observation !== undefined && step.observation !== null) {
           const obsStr = typeof step.observation === "object" ? JSON.stringify(step.observation, null, 2) : String(step.observation);
-          obsHtml = `<div class="observation-box">${escapeHtml(obsStr)}</div>`;
+          obsHtml = `<div class="observation-box">[OBSERVATION]\n${escapeHtml(obsStr)}</div>`;
         }
 
         let anomalyHtml = "";
@@ -339,7 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span style="font-size: 11px; color: #94a3b8; margin-left: auto;">Confidence: ${(issue.confidence * 100).toFixed(0)}%</span>
               </div>
               <p class="anomaly-desc">${escapeHtml(issue.description)}</p>
-              ${issue.recommendation ? `<p class="anomaly-rec">💡 <strong>Remediation:</strong> ${escapeHtml(issue.recommendation)}</p>` : ""}
+              ${issue.recommendation ? `<p class="anomaly-rec"><strong>Remediation:</strong> ${escapeHtml(issue.recommendation)}</p>` : ""}
             </div>
           `;
         });
@@ -348,6 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="step-marker">${step.step_index}</div>
           <div class="step-header">
             <span>Step ${step.step_index}</span>
+            ${step.step_duration_ms ? `<span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">(${step.step_duration_ms} ms)</span>` : ""}
           </div>
           ${step.thought ? `<div class="thought-bubble">${escapeHtml(step.thought)}</div>` : ""}
           ${step.action ? `<div class="action-pill"><strong>Action:</strong> ${escapeHtml(step.action)}</div>` : ""}
@@ -373,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <span style="font-size: 11px; color: #94a3b8; margin-left: auto;">Confidence: ${(issue.confidence * 100).toFixed(0)}%</span>
           </div>
           <p class="anomaly-desc">${escapeHtml(issue.description)}</p>
-          ${issue.recommendation ? `<p class="anomaly-rec">💡 <strong>Remediation:</strong> ${escapeHtml(issue.recommendation)}</p>` : ""}
+          ${issue.recommendation ? `<p class="anomaly-rec"><strong>Remediation:</strong> ${escapeHtml(issue.recommendation)}</p>` : ""}
         `;
         timeline.appendChild(issueDiv);
       });
@@ -412,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.innerHTML = `
           <div class="tool-header">
             <span class="tool-name">${spec.name}()</span>
-            ${spec.is_sensitive ? '<span class="sensitive-tag">High Privilege</span>' : ''}
+            ${spec.is_sensitive ? '<span class="sensitive-tag">Restricted Policy</span>' : ''}
           </div>
           <p class="tool-desc">${spec.description}</p>
           <div class="params-list">
@@ -644,14 +646,14 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px; font-size: 12px; line-height: 1.5; margin-bottom: 20px;">
-          <strong>Explanation:</strong> ${escapeHtml(res.score.explanation)}
+          <strong>Deduction Rationale:</strong> ${escapeHtml(res.score.explanation)}
         </div>
 
         <h4 style="font-size: 13px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Flagged Issues (${res.issues.length})</h4>
         <div style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
           ${
             res.issues.length === 0
-              ? '<p style="color: #34d399; font-size: 13px;">✓ Zero issues flagged. Trace is safe, factual, and compliant.</p>'
+              ? '<p style="color: #34d399; font-size: 13px;">Zero issues flagged. Trace is safe, factual, and compliant.</p>'
               : res.issues
                   .map(
                     (i) => `
@@ -662,7 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span style="font-size: 11px; color: #94a3b8; margin-left: auto;">${i.step_index !== null ? `Step ${i.step_index}` : 'Global'}</span>
                   </div>
                   <p class="anomaly-desc">${escapeHtml(i.description)}</p>
-                  ${i.recommendation ? `<p class="anomaly-rec">💡 ${escapeHtml(i.recommendation)}</p>` : ''}
+                  ${i.recommendation ? `<p class="anomaly-rec"><strong>Remediation:</strong> ${escapeHtml(i.recommendation)}</p>` : ''}
                 </div>
               `
                   )
