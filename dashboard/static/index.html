@@ -51,6 +51,14 @@
           </svg>
           Tool Catalog
         </button>
+        <button class="nav-tab" data-tab="tab-gallery" id="btn-tab-gallery">
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          Visuals & Screenshots
+        </button>
       </nav>
 
       <div class="header-actions">
@@ -293,6 +301,101 @@
       </div>
       <div class="tools-grid" id="tools-grid">
         <!-- Rendered dynamically -->
+      </div>
+    </section>
+    <!-- TAB 5: VISUALS & SCREENSHOTS GALLERY -->
+    <section class="tab-content" id="tab-gallery">
+      <div class="section-header">
+        <div>
+          <h2>System Visuals, Architecture & Real Demo Screenshots</h2>
+          <p class="section-desc">High-resolution architecture blueprints and authentic telemetry captures from the live monitoring harness.</p>
+        </div>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- Architecture Diagram -->
+        <div class="gallery-card">
+          <div class="gallery-card-img-wrap" onclick="window.open('/architecture_diagram.png', '_blank')">
+            <img src="/architecture_diagram.png" alt="Architecture Diagram">
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">System Architecture Blueprint</div>
+            <p class="gallery-card-desc">End-to-end pipeline: Ingestion -> 5 Parallel Detectors -> Multi-Pillar Scoring -> Web & HTML Reporting.</p>
+            <div class="gallery-card-actions">
+              <a href="/architecture_diagram.png" target="_blank" class="btn btn-secondary btn-sm">View Full Resolution</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real Overview Dashboard -->
+        <div class="gallery-card">
+          <div class="gallery-card-img-wrap" onclick="window.open('/screenshots/real_overview.png', '_blank')">
+            <img src="/screenshots/real_overview.png" alt="Overview Dashboard Screenshot">
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Live Benchmark KPI & Detector Performance</div>
+            <p class="gallery-card-desc">Real-time macro precision/recall KPIs, benchmark distribution, and individual failure mode detector metrics.</p>
+            <div class="gallery-card-actions">
+              <a href="/screenshots/real_overview.png" target="_blank" class="btn btn-secondary btn-sm">View Full Resolution</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real Trace Explorer -->
+        <div class="gallery-card">
+          <div class="gallery-card-img-wrap" onclick="window.open('/screenshots/real_trace_explorer.png', '_blank')">
+            <img src="/screenshots/real_trace_explorer.png" alt="Trace Explorer Screenshot">
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Trace Explorer & Telemetry Filter</div>
+            <p class="gallery-card-desc">Searchable and filterable table of 20 realistic evaluation traces spanning 5 domains with verdict tags and latency.</p>
+            <div class="gallery-card-actions">
+              <a href="/screenshots/real_trace_explorer.png" target="_blank" class="btn btn-secondary btn-sm">View Full Resolution</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real Trace Inspector Modal -->
+        <div class="gallery-card">
+          <div class="gallery-card-img-wrap" onclick="window.open('/screenshots/real_trace_inspector.png', '_blank')">
+            <img src="/screenshots/real_trace_inspector.png" alt="Trace Inspector Screenshot">
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Step-by-Step Inspector & Deduction Ledger</div>
+            <p class="gallery-card-desc">Deep-dive modal rendering thoughts, tool parameters, observations, and itemized scoring deductions.</p>
+            <div class="gallery-card-actions">
+              <a href="/screenshots/real_trace_inspector.png" target="_blank" class="btn btn-secondary btn-sm">View Full Resolution</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real Live Playground -->
+        <div class="gallery-card">
+          <div class="gallery-card-img-wrap" onclick="window.open('/screenshots/real_live_playground.png', '_blank')">
+            <img src="/screenshots/real_live_playground.png" alt="Live Playground Screenshot">
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Interactive Live Playground Studio</div>
+            <p class="gallery-card-desc">On-the-fly execution studio for testing custom JSON agent traces with instant sub-millisecond evaluation.</p>
+            <div class="gallery-card-actions">
+              <a href="/screenshots/real_live_playground.png" target="_blank" class="btn btn-secondary btn-sm">View Full Resolution</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- LinkedIn Post Visual -->
+        <div class="gallery-card">
+          <div class="gallery-card-img-wrap" onclick="window.open('/linkedin_post_visual.png', '_blank')">
+            <img src="/linkedin_post_visual.png" alt="LinkedIn Post Visual Banner">
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">LinkedIn Project Showcase Banner</div>
+            <p class="gallery-card-desc">16:9 dark-mode banner highlighting sub-millisecond evaluation, explainable scoring, and 5-category detection.</p>
+            <div class="gallery-card-actions">
+              <a href="/linkedin_post_visual.png" target="_blank" class="btn btn-secondary btn-sm">View Full Resolution</a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>

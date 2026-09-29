@@ -35,12 +35,32 @@ app.add_middleware(
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-TRACES_DIR = os.path.join(os.path.dirname(BASE_DIR), "data", "traces")
+REPO_ROOT = os.path.dirname(BASE_DIR)
+TRACES_DIR = os.path.join(REPO_ROOT, "data", "traces")
+SCREENSHOTS_DIR = os.path.join(REPO_ROOT, "screenshots")
 
 harness = EvaluationHarness()
 
 # Mount static files
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+if os.path.exists(SCREENSHOTS_DIR):
+    app.mount("/screenshots", StaticFiles(directory=SCREENSHOTS_DIR), name="screenshots")
+
+
+@app.get("/architecture_diagram.png")
+async def serve_architecture_diagram():
+    p = os.path.join(REPO_ROOT, "architecture_diagram.png")
+    if os.path.exists(p):
+        return FileResponse(p, media_type="image/png")
+    raise HTTPException(status_code=404, detail="Architecture diagram not found")
+
+
+@app.get("/linkedin_post_visual.png")
+async def serve_linkedin_visual():
+    p = os.path.join(REPO_ROOT, "linkedin_post_visual.png")
+    if os.path.exists(p):
+        return FileResponse(p, media_type="image/png")
+    raise HTTPException(status_code=404, detail="LinkedIn visual not found")
 
 
 @app.get("/", response_class=HTMLResponse)
