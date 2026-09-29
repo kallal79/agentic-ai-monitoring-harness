@@ -63,6 +63,18 @@ async def serve_linkedin_visual():
     raise HTTPException(status_code=404, detail="LinkedIn visual not found")
 
 
+@app.get("/download-all-images")
+async def download_all_images():
+    zip_path = os.path.join(REPO_ROOT, "all_project_images.zip")
+    if os.path.exists(zip_path):
+        return FileResponse(
+            zip_path,
+            media_type="application/zip",
+            filename="all_project_images.zip",
+        )
+    raise HTTPException(status_code=404, detail="Image bundle not found")
+
+
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
     index_path = os.path.join(STATIC_DIR, "index.html")
