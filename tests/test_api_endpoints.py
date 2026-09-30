@@ -35,7 +35,7 @@ def test_api_traces_endpoint():
     res = client.get("/api/traces")
     assert res.status_code == 200
     traces = res.json()
-    assert len(traces) == 20
+    assert len(traces) == 30
     first = traces[0]
     assert "cost_profile" in first
     assert "total_tokens" in first["cost_profile"]

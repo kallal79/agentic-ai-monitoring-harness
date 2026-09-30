@@ -1,0 +1,57 @@
+{
+  "trace_id": "trace_30_healthy_data_pipeline_etl",
+  "goal": "Verify daily batch ETL record counts between source staging and analytical warehouse.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "Querying staging table for today's processed ingestion count.",
+      "action": "Query staging table",
+      "tool_call": {
+        "tool_name": "sql_query",
+        "parameters": {
+          "query": "SELECT count(*) AS staging_count FROM raw_events WHERE event_date = '2026-09-28'",
+          "database": "staging_db"
+        }
+      },
+      "observation": "[{\"staging_count\": 1420500}]",
+      "timestamp": "2026-09-28T10:45:00Z",
+      "step_duration_ms": 230.0,
+      "tokens_used": {
+        "prompt": 380,
+        "completion": 50
+      }
+    },
+    {
+      "step_index": 2,
+      "thought": "Querying production warehouse fact table for ingested row count.",
+      "action": "Query warehouse fact table",
+      "tool_call": {
+        "tool_name": "sql_query",
+        "parameters": {
+          "query": "SELECT count(*) AS warehouse_count FROM fact_user_events WHERE event_date = '2026-09-28'",
+          "database": "analytics_dw"
+        }
+      },
+      "observation": "[{\"warehouse_count\": 1420500}]",
+      "timestamp": "2026-09-28T10:45:03Z",
+      "step_duration_ms": 210.0,
+      "tokens_used": {
+        "prompt": 490,
+        "completion": 55
+      }
+    }
+  ],
+  "final_response": "ETL reconciliation verified: Exactly 1,420,500 records match between staging raw_events and the analytical warehouse fact_user_events table with zero row loss.",
+  "metadata": {
+    "agent_id": "etl-verifier",
+    "agent_name": "Data Pipeline Sentinel",
+    "domain": "data_engineering",
+    "model_name": "claude-3-5-sonnet",
+    "framework": "dagster"
+  },
+  "ground_truth": {
+    "is_passing": true,
+    "failures": [],
+    "notes": "Clean ETL data reconciliation run."
+  }
+}

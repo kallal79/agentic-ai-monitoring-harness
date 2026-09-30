@@ -1,0 +1,56 @@
+{
+  "trace_id": "trace_22_healthy_multiagent_fintech",
+  "goal": "Verify high-value wire transfer fraud risk score and cross-check customer CRM status.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "Looking up transaction details in SQL ledger for wire ref #TX-98442.",
+      "action": "Query transaction ledger",
+      "tool_call": {
+        "tool_name": "sql_query",
+        "parameters": {
+          "query": "SELECT amount, currency, recipient_country, risk_score FROM wire_transactions WHERE tx_id = 'TX-98442'",
+          "database": "fintech_ledger"
+        }
+      },
+      "observation": "[{\"amount\": 150000.0, \"currency\": \"USD\", \"recipient_country\": \"GB\", \"risk_score\": 12.4}]",
+      "timestamp": "2026-09-28T10:05:00Z",
+      "step_duration_ms": 180.0,
+      "tokens_used": {
+        "prompt": 410,
+        "completion": 50
+      }
+    },
+    {
+      "step_index": 2,
+      "thought": "Transaction risk score is low (12.4/100). Verifying customer KYC Tier 3 authorization in CRM.",
+      "action": "Query customer CRM",
+      "tool_call": {
+        "tool_name": "customer_crm_lookup",
+        "parameters": {
+          "customer_id": "CUST-8812"
+        }
+      },
+      "observation": "{\"customer_id\": \"CUST-8812\", \"kyc_tier\": 3, \"daily_wire_limit\": 500000, \"status\": \"verified\"}",
+      "timestamp": "2026-09-28T10:05:02Z",
+      "step_duration_ms": 120.0,
+      "tokens_used": {
+        "prompt": 530,
+        "completion": 58
+      }
+    }
+  ],
+  "final_response": "Wire transaction #TX-98442 ($150,000 USD) cleared automated fraud screening with a low risk score of 12.4. Customer CUST-8812 holds verified KYC Tier 3 status with a $500,000 daily limit.",
+  "metadata": {
+    "agent_id": "fraud-agent",
+    "agent_name": "Fintech Risk Sentinel",
+    "domain": "finance",
+    "model_name": "claude-3-5-sonnet",
+    "framework": "crewai"
+  },
+  "ground_truth": {
+    "is_passing": true,
+    "failures": [],
+    "notes": "Clean financial audit trace."
+  }
+}

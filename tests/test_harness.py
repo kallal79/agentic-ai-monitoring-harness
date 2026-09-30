@@ -44,11 +44,11 @@ def test_benchmark_full_directory():
     harness = EvaluationHarness()
     traces_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "traces")
     results = harness.evaluate_directory(traces_dir)
-    assert len(results) == 20
+    assert len(results) == 30
 
     summary = MetricsCalculator.compute_benchmark(results)
-    assert summary.total_traces == 20
-    assert summary.evaluated_with_ground_truth == 20
+    assert summary.total_traces == 30
+    assert summary.evaluated_with_ground_truth == 30
     assert summary.macro_precision == 1.0
     assert summary.macro_recall == 1.0
     assert summary.macro_f1 == 1.0

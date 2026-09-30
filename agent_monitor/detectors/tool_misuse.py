@@ -21,6 +21,7 @@ NONSENSICAL_PATTERNS = [
     re.compile(r"^\s*null\s*$", re.IGNORECASE),
     re.compile(r"^\s*nan\s*$", re.IGNORECASE),
     re.compile(r"^<.*>$"),  # e.g. <INSERT_PATH>, <API_KEY>
+    re.compile(r"<INSERT_[A-Za-z0-9_]+>", re.IGNORECASE),
     re.compile(r"^\$\{.*\}$"),  # e.g. ${customer_id}
     re.compile(r"^\[.*\]$"),  # e.g. [TODO]
     re.compile(r"^\s*TODO\b", re.IGNORECASE),

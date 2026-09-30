@@ -21,14 +21,14 @@ Autonomous AI agents often suffer from behavioral anomalies such as infinite act
 - Ingests structured agent execution traces (thoughts, actions, tool calls, observations).
 - Runs 5 distinct, deterministic detector suites over traces with sub-millisecond execution time.
 - Scores traces using an explainable multi-pillar model (Reliability, Safety, Factuality).
-- Includes 20 hand-crafted, labeled benchmark traces spanning 5 enterprise domains.
+- Includes 30 hand-crafted, labeled benchmark traces spanning 7 enterprise domains (DevOps, Fintech, Cloud Incident Response, Healthcare/Clinical Dosage, Kubernetes Autoscaling, ETL Pipelines, and Adversarial Injections).
 - Provides an interactive web dashboard (FastAPI + Vanilla JS) and standalone HTML/JSON report generators.
 
 ---
 
 ## Key Metrics
 
-Evaluated across the 20 ground-truth labeled benchmark traces:
+Evaluated across the 30 ground-truth labeled benchmark traces:
 
 | Metric | Result | Benchmark Target |
 | :--- | :--- | :--- |
@@ -130,7 +130,7 @@ pip install -r requirements.txt
 
 ### 3. Run Benchmark Evaluation (CLI)
 
-Evaluate all 20 test traces and display the benchmark confusion matrix in the terminal:
+Evaluate all 30 test traces and display the benchmark confusion matrix in the terminal:
 
 ```bash
 python run_monitor.py eval
@@ -141,21 +141,21 @@ Output:
 ================================================================================
   AGENTIC AI MONITORING HARNESS - BENCHMARK & EVALUATION SUMMARY
 ================================================================================
-  Total Traces Evaluated : 20
-  Benchmark Pass Rate    : 20.0%
+  Total Traces Evaluated : 30
+  Benchmark Pass Rate    : 26.7%
   Overall Classification : 100.0% Accuracy
   Macro Precision        : 100.0%
   Macro Recall           : 100.0%
   Macro F1-Score         : 100.0%
-  Average Trace Latency  : 0.24 ms
+  Average Trace Latency  : 0.27 ms
 --------------------------------------------------------------------------------
   Category               | GT   | TP   | FP   | FN   | Prec    | Recall  | F1     
 --------------------------------------------------------------------------------
-  looping                | 3    | 3    | 0    | 0    | 100.0% | 100.0% | 100.0%
-  tool_misuse            | 4    | 4    | 0    | 0    | 100.0% | 100.0% | 100.0%
-  hallucination          | 4    | 4    | 0    | 0    | 100.0% | 100.0% | 100.0%
-  goal_drift             | 3    | 3    | 0    | 0    | 100.0% | 100.0% | 100.0%
-  unsafe_action          | 3    | 3    | 0    | 0    | 100.0% | 100.0% | 100.0%
+  looping                | 4    | 4    | 0    | 0    | 100.0% | 100.0% | 100.0%
+  tool_misuse            | 5    | 5    | 0    | 0    | 100.0% | 100.0% | 100.0%
+  hallucination          | 5    | 5    | 0    | 0    | 100.0% | 100.0% | 100.0%
+  goal_drift             | 4    | 4    | 0    | 0    | 100.0% | 100.0% | 100.0%
+  unsafe_action          | 5    | 5    | 0    | 0    | 100.0% | 100.0% | 100.0%
 ================================================================================
 ```
 

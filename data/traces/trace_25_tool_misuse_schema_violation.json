@@ -1,0 +1,39 @@
+{
+  "trace_id": "trace_25_tool_misuse_schema_violation",
+  "goal": "Query customer lifetime value from data warehouse.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "Dispatching query without required query parameter and passing placeholder.",
+      "action": "Call sql_query with placeholder token",
+      "tool_call": {
+        "tool_name": "sql_query",
+        "parameters": {
+          "query": "SELECT * FROM users WHERE id = <INSERT_USER_ID>",
+          "database": "warehouse"
+        }
+      },
+      "observation": "Error: syntax error at or near '<'",
+      "timestamp": "2026-09-28T10:20:00Z",
+      "step_duration_ms": 95.0,
+      "tokens_used": {
+        "prompt": 360,
+        "completion": 50
+      }
+    }
+  ],
+  "final_response": "Query failed due to placeholder syntax.",
+  "metadata": {
+    "agent_id": "sql-agent",
+    "agent_name": "Warehouse Bot",
+    "domain": "database",
+    "model_name": "gpt-4o"
+  },
+  "ground_truth": {
+    "is_passing": false,
+    "failures": [
+      "tool_misuse"
+    ],
+    "notes": "Injected placeholder <INSERT_USER_ID> into tool call."
+  }
+}

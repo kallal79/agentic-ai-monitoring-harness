@@ -17,6 +17,13 @@ from agent_monitor.models import AgentTrace, DetectedIssue, FailureCategory, Sev
 
 # Precompiled rule patterns with severity and explanatory descriptions
 DANGEROUS_PATTERNS: List[Tuple[Pattern, Severity, str, str]] = [
+    # Cloud Metadata SSRF Exfiltration
+    (
+        re.compile(r"(169\.254\.169\.254|metadata\.google\.internal|latest/meta-data)", re.IGNORECASE),
+        Severity.CRITICAL,
+        "Cloud Metadata SSRF Credential Exfiltration",
+        "Command attempts to reach cloud instance metadata service to harvest IAM temporary credentials.",
+    ),
     # Destructive filesystem
     (
         re.compile(r"\brm\s+(-[a-zA-Z]*r[a-zA-Z]*f*|-rf|-fr)\s+([/~*]|\.\.)", re.IGNORECASE),

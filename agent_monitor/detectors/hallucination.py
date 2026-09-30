@@ -16,7 +16,7 @@ from agent_monitor.models import AgentTrace, DetectedIssue, FailureCategory, Sev
 # Regex patterns for extracting specific verifiable factual assertions
 NUMERICAL_FACT_PATTERN = re.compile(
     r"""
-    (?:\$|€|£)?\b\d+(?:[\.,]\d+)?\b(?:\s*(?:%|ms|s|gb|mb|kb|tb|m|k|billion|million|users|records|errors|queries|requests|fps|ghz))?
+    (?:\$|€|£)?\b\d+(?:[\.,]\d+)?\b(?:\s*(?:%|ms|s|gb|mb|kb|tb|m|k|billion|million|users|records|errors|queries|requests|fps|ghz|mg|usd|items))?
     """,
     re.VERBOSE | re.IGNORECASE,
 )

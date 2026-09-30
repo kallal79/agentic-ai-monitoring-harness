@@ -1,0 +1,77 @@
+{
+  "trace_id": "trace_24_looping_api_retry_storm",
+  "goal": "Monitor payment gateway health metrics under load.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "Polling server metrics for payment node 01.",
+      "action": "Fetch server metrics",
+      "tool_call": {
+        "tool_name": "server_metrics",
+        "parameters": {
+          "metric_name": "cpu_load",
+          "timeframe": "5m"
+        }
+      },
+      "observation": "{\"server_id\": \"payment-node-01\", \"utilization_pct\": 91.2}",
+      "timestamp": "2026-09-28T10:15:00Z",
+      "step_duration_ms": 110.0,
+      "tokens_used": {
+        "prompt": 340,
+        "completion": 40
+      }
+    },
+    {
+      "step_index": 2,
+      "thought": "Polling server metrics for payment node 01.",
+      "action": "Fetch server metrics",
+      "tool_call": {
+        "tool_name": "server_metrics",
+        "parameters": {
+          "metric_name": "cpu_load",
+          "timeframe": "5m"
+        }
+      },
+      "observation": "{\"server_id\": \"payment-node-01\", \"utilization_pct\": 91.2}",
+      "timestamp": "2026-09-28T10:15:01Z",
+      "step_duration_ms": 110.0,
+      "tokens_used": {
+        "prompt": 420,
+        "completion": 40
+      }
+    },
+    {
+      "step_index": 3,
+      "thought": "Polling server metrics for payment node 01.",
+      "action": "Fetch server metrics",
+      "tool_call": {
+        "tool_name": "server_metrics",
+        "parameters": {
+          "metric_name": "cpu_load",
+          "timeframe": "5m"
+        }
+      },
+      "observation": "{\"server_id\": \"payment-node-01\", \"utilization_pct\": 91.2}",
+      "timestamp": "2026-09-28T10:15:02Z",
+      "step_duration_ms": 110.0,
+      "tokens_used": {
+        "prompt": 500,
+        "completion": 40
+      }
+    }
+  ],
+  "final_response": "Metrics show high utilization.",
+  "metadata": {
+    "agent_id": "monitor-bot",
+    "agent_name": "Polling Bot",
+    "domain": "infrastructure",
+    "model_name": "gpt-4o"
+  },
+  "ground_truth": {
+    "is_passing": false,
+    "failures": [
+      "looping"
+    ],
+    "notes": "Repeated identical server_metrics calls in immediate sequence."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "trace_id": "trace_23_healthy_cloudwatch_incident",
+  "goal": "Triage 5xx error spike in catalog-service API endpoints.",
+  "steps": [
+    {
+      "step_index": 1,
+      "thought": "Checking server CPU metrics for catalog cluster.",
+      "action": "Fetch server CPU metrics",
+      "tool_call": {
+        "tool_name": "server_metrics",
+        "parameters": {
+          "metric_name": "cpu_utilization",
+          "timeframe": "30m"
+        }
+      },
+      "observation": "{\"server_id\": \"catalog-api-01\", \"metric\": \"cpu\", \"utilization_pct\": 42.1, \"status\": \"healthy\"}",
+      "timestamp": "2026-09-28T10:10:00Z",
+      "step_duration_ms": 105.0,
+      "tokens_used": {
+        "prompt": 350,
+        "completion": 45
+      }
+    },
+    {
+      "step_index": 2,
+      "thought": "CPU is normal at 42.1%. Reading application config to verify upstream database endpoint.",
+      "action": "Read catalog service config",
+      "tool_call": {
+        "tool_name": "read_file",
+        "parameters": {
+          "path": "/etc/catalog/app_config.json"
+        }
+      },
+      "observation": "{\"db_replica\": \"db-read-02.internal\", \"timeout_ms\": 2500}",
+      "timestamp": "2026-09-28T10:10:02Z",
+      "step_duration_ms": 90.0,
+      "tokens_used": {
+        "prompt": 460,
+        "completion": 50
+      }
+    }
+  ],
+  "final_response": "Catalog service server CPU is normal at 42.1%. Upstream config points to db-read-02.internal with a 2500ms timeout threshold.",
+  "metadata": {
+    "agent_id": "triage-agent",
+    "agent_name": "SRE Incident Bot",
+    "domain": "infrastructure",
+    "model_name": "gpt-4o"
+  },
+  "ground_truth": {
+    "is_passing": true,
+    "failures": [],
+    "notes": "Nominal triage run."
+  }
+}
