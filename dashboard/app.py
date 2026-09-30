@@ -2,26 +2,33 @@
 dashboard.app
 
 FastAPI server providing REST APIs and static dashboard interface
-for real-time agent evaluation and benchmark exploration.
+for real-time agent evaluation, execution DAG visualizer, token economics,
+runtime guardrail policy engine, and OpenTelemetry GenAI export.
 """
 
 import json
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 
 from agent_monitor.harness import EvaluationHarness
 from agent_monitor.metrics import MetricsCalculator
 from agent_monitor.models import AgentTrace, EvaluationResult
 from agent_monitor.tool_registry import DEFAULT_TOOL_REGISTRY
+from agent_monitor.profiler import ResourceProfiler
+from agent_monitor.dag import DAGBuilder
+from agent_monitor.policy import PolicyEngine, DEFAULT_POLICIES
+from agent_monitor.opentelemetry_exporter import OpenTelemetryExporter
+from agent_monitor.comparator import TraceComparator
 
 app = FastAPI(
-    title="Agentic AI Monitoring Dashboard API",
-    description="Observability, evaluation, and safety scoring harness for autonomous AI agents.",
-    version="1.0.0",
+    title="Agentic AI Monitoring & Observability API",
+    description="Observability, behavioral evaluation, execution DAGs, token economics, and runtime guardrails for AI agents.",
+    version="1.2.0",
 )
 
 # Enable CORS for local development
@@ -40,6 +47,7 @@ TRACES_DIR = os.path.join(REPO_ROOT, "data", "traces")
 SCREENSHOTS_DIR = os.path.join(REPO_ROOT, "screenshots")
 
 harness = EvaluationHarness()
+policy_engine = PolicyEngine(DEFAULT_POLICIES)
 
 # Mount static files
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -83,27 +91,9 @@ async def serve_index():
     return HTMLResponse("<h1>Agentic AI Monitoring Dashboard</h1><p>Static files loading...</p>")
 
 
-@app.get("/api/benchmark")
-async def get_benchmark():
-    """Returns aggregated benchmark metrics over all benchmark traces."""
-    results = harness.evaluate_directory(TRACES_DIR)
-    summary = MetricsCalculator.compute_benchmark(results)
-    return summary.model_dump()
-
-
-@app.get("/api/traces")
-async def get_all_traces():
-    """Returns evaluation results and details for all test traces."""
-    results = harness.evaluate_directory(TRACES_DIR)
-    return [r.model_dump() for r in results]
-
-
-@app.get("/api/trace/{trace_id}")
-async def get_trace_details(trace_id: str):
-    """Retrieve full raw trace content and evaluation result for a trace ID."""
+def _load_trace(trace_id: str) -> AgentTrace:
     trace_path = os.path.join(TRACES_DIR, f"{trace_id}.json")
     if not os.path.exists(trace_path):
-        # Try finding without extension if needed
         matching = [f for f in os.listdir(TRACES_DIR) if f.startswith(trace_id) and f.endswith(".json")]
         if matching:
             trace_path = os.path.join(TRACES_DIR, matching[0])
@@ -111,15 +101,91 @@ async def get_trace_details(trace_id: str):
             raise HTTPException(status_code=404, detail=f"Trace '{trace_id}' not found.")
 
     with open(trace_path, "r", encoding="utf-8") as f:
-        raw_trace = json.load(f)
+        data = json.load(f)
+    return AgentTrace.model_validate(data)
 
-    trace = AgentTrace.model_validate(raw_trace)
-    eval_result = harness.evaluate_trace(trace)
 
-    return {
-        "raw_trace": raw_trace,
-        "evaluation": eval_result.model_dump(),
+@app.get("/api/benchmark")
+async def get_benchmark():
+    """Returns aggregated benchmark metrics over all benchmark traces including token & cost stats."""
+    results = harness.evaluate_directory(TRACES_DIR)
+    summary = MetricsCalculator.compute_benchmark(results)
+    total_tokens = 0
+    total_cost = 0.0
+    total_wasted_tokens = 0
+    traces = [AgentTrace.model_validate(json.load(open(os.path.join(TRACES_DIR, f), "r", encoding="utf-8"))) for f in os.listdir(TRACES_DIR) if f.endswith(".json")]
+    for t in traces:
+        prof = ResourceProfiler.profile_trace(t)
+        total_tokens += prof.total_tokens
+        total_cost += prof.total_cost_usd
+        total_wasted_tokens += prof.wasted_tokens
+    data = summary.model_dump()
+    data["economics"] = {
+        "total_tokens_consumed": total_tokens,
+        "total_cost_usd": round(total_cost, 4),
+        "avg_tokens_per_trace": int(total_tokens / max(1, len(traces))),
+        "avg_cost_per_trace_usd": round(total_cost / max(1, len(traces)), 4),
+        "total_wasted_tokens": total_wasted_tokens,
     }
+    return data
+
+
+@app.get("/api/traces")
+async def get_all_traces():
+    """Returns evaluation results, economics, and telemetry for all test traces."""
+    results = harness.evaluate_directory(TRACES_DIR)
+    out = []
+    for r in results:
+        t = _load_trace(r.trace_id)
+        prof = ResourceProfiler.profile_trace(t)
+        d = r.model_dump()
+        d["cost_profile"] = {
+            "total_tokens": prof.total_tokens,
+            "total_cost_usd": prof.total_cost_usd,
+            "wasted_tokens": prof.wasted_tokens,
+            "token_burn_alert": prof.token_burn_alert,
+            "efficiency_ratio": prof.cost_efficiency_ratio,
+        }
+        out.append(d)
+    return out
+
+
+@app.get("/api/trace/{trace_id}")
+async def get_trace_details(trace_id: str):
+    """Retrieve full raw trace, evaluation, resource profile, and DAG."""
+    trace = _load_trace(trace_id)
+    eval_result = harness.evaluate_trace(trace)
+    profile = ResourceProfiler.profile_trace(trace)
+    dag = DAGBuilder.build_dag(trace, eval_result)
+    policy_report = policy_engine.evaluate_trace(trace)
+    return {
+        "raw_trace": trace.model_dump(),
+        "evaluation": eval_result.model_dump(),
+        "profile": profile.model_dump(),
+        "dag": dag.model_dump(),
+        "policy_report": policy_report.model_dump(),
+    }
+
+
+@app.get("/api/trace/{trace_id}/dag")
+async def get_trace_dag(trace_id: str):
+    """Returns interactive Execution DAG node graph for visualization."""
+    trace = _load_trace(trace_id)
+    eval_result = harness.evaluate_trace(trace)
+    dag = DAGBuilder.build_dag(trace, eval_result)
+    return dag.model_dump()
+
+
+@app.get("/api/trace/{trace_id}/otel")
+async def export_trace_opentelemetry(trace_id: str):
+    """Export trace as OpenTelemetry GenAI Semantic Convention Spans."""
+    trace = _load_trace(trace_id)
+    eval_result = harness.evaluate_trace(trace)
+    otel = OpenTelemetryExporter.export_trace(trace, eval_result)
+    return JSONResponse(
+        content=otel.model_dump(),
+        headers={"Content-Disposition": f"attachment; filename=otel_{trace_id}.json"}
+    )
 
 
 @app.post("/api/eval")
@@ -128,9 +194,53 @@ async def evaluate_custom_trace(trace_data: Dict[str, Any]):
     try:
         trace = AgentTrace.model_validate(trace_data)
         eval_result = harness.evaluate_trace(trace)
-        return eval_result.model_dump()
+        profile = ResourceProfiler.profile_trace(trace)
+        policy_report = policy_engine.evaluate_trace(trace)
+        dag = DAGBuilder.build_dag(trace, eval_result)
+        return {
+            "evaluation": eval_result.model_dump(),
+            "profile": profile.model_dump(),
+            "policy_report": policy_report.model_dump(),
+            "dag": dag.model_dump(),
+        }
     except Exception as e:
         raise HTTPException(status_code=422, detail=f"Invalid agent trace schema: {str(e)}")
+
+
+@app.get("/api/policies")
+async def get_policies():
+    """Lists active runtime guardrails."""
+    return [p.model_dump() for p in policy_engine.policies.values()]
+
+
+class PolicyToggleRequest(BaseModel):
+    rule_id: str
+    is_enabled: bool
+
+
+@app.post("/api/policies/toggle")
+async def toggle_policy(req: PolicyToggleRequest):
+    """Toggle a guardrail policy rule on or off."""
+    if req.rule_id in policy_engine.policies:
+        policy_engine.policies[req.rule_id].is_enabled = req.is_enabled
+        return {"status": "ok", "rule_id": req.rule_id, "is_enabled": req.is_enabled}
+    raise HTTPException(status_code=404, detail="Policy rule not found")
+
+
+class CompareRequest(BaseModel):
+    trace_a_id: str
+    trace_b_id: str
+
+
+@app.post("/api/compare")
+async def compare_traces(req: CompareRequest):
+    """Side-by-side comparative diff between two traces."""
+    trace_a = _load_trace(req.trace_a_id)
+    trace_b = _load_trace(req.trace_b_id)
+    eval_a = harness.evaluate_trace(trace_a)
+    eval_b = harness.evaluate_trace(trace_b)
+    comp = TraceComparator.compare(trace_a, trace_b, eval_a, eval_b)
+    return comp.model_dump()
 
 
 @app.get("/api/tools")

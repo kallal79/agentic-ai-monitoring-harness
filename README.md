@@ -53,27 +53,55 @@ Evaluated across the 20 ground-truth labeled benchmark traces:
 
 ---
 
-## Live Observability Dashboard & Screenshots
+## State-of-the-Art Observability Features
 
-The web dashboard is built with FastAPI and Vanilla CSS/JS for instantaneous, lightweight local observability.
+In addition to core multi-category behavioral detection, the harness incorporates production-grade observability standards inspired by **OpenTelemetry GenAI**, **Arize Phoenix**, and **Microsoft Agent Governance**:
 
-### 1. Benchmark Overview & Detector Performance
-![Benchmark Overview](screenshots/real_overview.png)
-*Displays aggregated macro metrics (100% Precision, 100% Recall), trace distribution by category, and individual detector breakdown cards.*
+1. **Interactive Execution DAG & Causal Span Tree:**
+   - Translates linear step sequences into an interactive node-based Directed Acyclic Graph (DAG).
+   - Color-coded nodes (Goal, Reasoning, Tool Invocation, Observation, Anomaly Breach, and Evaluator Gate) with live payload inspection.
+   - Detects cyclic execution loops ($A \to B \to A$) and flags critical paths.
 
-### 2. Multi-Trace Explorer & Filterable Telemetry
-![Trace Explorer](screenshots/real_trace_explorer.png)
-*Filterable telemetry table containing all 20 agent traces across SRE, SQL, CRM, Research, and SysAdmin domains with verdict tags and latency.*
+2. **Token Economics & Latency Decomposition:**
+   - Tracks prompt tokens, completion tokens, and estimates API cost (USD) across major model pricing catalogs (GPT-4o, Claude 3.5 Sonnet, Llama 3.3).
+   - Flags **Token Burn Inefficiencies** when repetitive loops consume budget without advancing the task.
+   - Decomposes latency into Planning vs Tool Execution vs Ingestion vs Verification overhead.
 
-### 3. Step-by-Step Inspector & Deduction Ledger
-![Trace Inspector](screenshots/real_trace_inspector.png)
-*Deep-dive modal rendering thoughts, tool parameters, observations, and an itemized scoring deduction ledger.*
+3. **Behavioral Regression Diff & Trace Comparator:**
+   - Side-by-side comparative diffing between baseline runs and newly prompted/failing runs.
+   - Automatically identifies the exact **Point of Divergence** (step index and semantic delta) where an agent veered off track.
 
-### 4. Interactive Live Playground Execution Studio
-![Live Playground](screenshots/real_live_playground.png)
-*On-the-fly execution studio for testing custom JSON agent traces with instant sub-millisecond evaluation.*
+4. **Runtime Guardrails & Security Policy Engine:**
+   - Deterministic policy checkpoints intercepting destructive commands (`rm -rf`, `mkfs`), sensitive path access (`.env`, `shadow`, private keys), indirect prompt injections, and spend limits.
+   - Features real-time toggle switches and an automated compliance audit runner.
+
+5. **OpenTelemetry GenAI Semantic Conventions Export:**
+   - One-click export of any agent trace into OpenTelemetry `gen_ai.agent`, `gen_ai.tool`, and `gen_ai.operation` spans for direct ingestion into Datadog, Jaeger, or Arize Phoenix.
 
 ---
+
+## Live Observability Dashboard & Screenshots
+
+### 1. Benchmark Overview: Token Economics & Latency Waterfall
+![Benchmark Overview](screenshots/real_overview.png)
+*Macro precision/recall KPIs, benchmark distribution, token expenditure ($0.0332 USD), loop waste detection, and latency breakdown waterfall.*
+
+### 2. Interactive Execution DAG Visualizer
+![Execution DAG](screenshots/real_dag_visualizer.png)
+*Node-based causal span tree showing thoughts, tool calls, observation gates, and red pulsing anomaly callouts with interactive payload inspection.*
+
+### 3. Behavioral Regression Diff & Trace Comparator
+![Trace Comparator](screenshots/real_trace_comparator.png)
+*Side-by-side run comparison identifying the exact divergence step, score delta, and cost variance between baseline and failing runs.*
+
+### 4. Runtime Guardrails & Security Policy Engine
+![Runtime Guardrails](screenshots/real_guardrails.png)
+*Active deterministic policy checkpoints blocking destructive commands, credential leakage, and infinite loops with real-time toggle switches.*
+
+### 5. Multi-Trace Explorer & Filterable Telemetry Table
+![Trace Explorer](screenshots/real_trace_explorer.png)
+*Filterable telemetry table containing all 20 agent traces with token counts, USD cost attribution, and direct OpenTelemetry GenAI JSON export.*
+
 
 ## Quickstart Guide
 

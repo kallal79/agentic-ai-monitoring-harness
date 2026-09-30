@@ -21,7 +21,7 @@
         </div>
         <div class="brand-text">
           <h1>Agentic AI Monitor</h1>
-          <span class="brand-tag">Behavioral Observability & Safety Harness</span>
+          <span class="brand-tag">Runtime Observability, DAGs, Economics & Guardrails</span>
         </div>
       </div>
 
@@ -38,6 +38,26 @@
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           Trace Explorer <span class="badge-count" id="nav-trace-count">20</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-dag" id="btn-tab-dag">
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Execution DAG
+        </button>
+        <button class="nav-tab" data-tab="tab-compare" id="btn-tab-compare">
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+            <polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>
+          </svg>
+          Trace Comparator
+        </button>
+        <button class="nav-tab" data-tab="tab-policies" id="btn-tab-policies">
+          <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Runtime Guardrails
         </button>
         <button class="nav-tab" data-tab="tab-playground" id="btn-tab-playground">
           <svg class="tab-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -129,7 +149,44 @@
             <span class="kpi-badge">Sub-ms</span>
           </div>
           <div class="kpi-value" id="kpi-avg-latency">0.24 ms</div>
-          <div class="kpi-sub">Deterministic local engine</div>
+          <div class="kpi-sub">Deterministic engine</div>
+        </div>
+
+        <div class="kpi-card highlight-amber" id="kpi-tokens">
+          <div class="kpi-top">
+            <span class="kpi-label">Token Economics</span>
+            <span class="kpi-badge badge-amber">Cost Profiler</span>
+          </div>
+          <div class="kpi-value" id="kpi-total-tokens">6,744</div>
+          <div class="kpi-sub" id="kpi-total-cost">Est. Cost: $0.0332 USD</div>
+        </div>
+
+        <div class="kpi-card highlight-rose" id="kpi-waste">
+          <div class="kpi-top">
+            <span class="kpi-label">Loop Inefficiency</span>
+            <span class="kpi-badge badge-rose">Spend Guard</span>
+          </div>
+          <div class="kpi-value" id="kpi-wasted-tokens">463 tok</div>
+          <div class="kpi-sub" id="kpi-wasted-sub">Wasted in parameter loops</div>
+        </div>
+      </div>
+
+      <!-- Latency Waterfall Breakdown -->
+      <div class="waterfall-card">
+        <div class="waterfall-header">
+          <h3>Sub-Millisecond Latency & Stage Decomposition</h3>
+          <span class="waterfall-badge">Sub-millisecond verification overhead (~0.24 ms) vs external model calls</span>
+        </div>
+        <div class="waterfall-bar">
+          <div class="waterfall-segment seg-planning" style="width: 45%;" title="Agent Planning & Reasoning (45%)">
+            <span>Planning (45%)</span>
+          </div>
+          <div class="waterfall-segment seg-tool" style="width: 54.8%;" title="Tool Execution & Network Latency (54.8%)">
+            <span>Tool Execution (54.8%)</span>
+          </div>
+          <div class="waterfall-segment seg-harness" style="width: 0.2%;" title="Harness Deterministic Evaluation (0.2%)">
+            <span>Harness (0.2%)</span>
+          </div>
         </div>
       </div>
 
@@ -219,18 +276,163 @@
               <tr>
                 <th>Trace ID</th>
                 <th>Goal Objective</th>
-                <th>Steps</th>
                 <th>Status</th>
                 <th>Score</th>
-                <th>Pillar Breakdown</th>
-                <th>Detected Issues</th>
+                <th>Pillars</th>
+                <th>Steps</th>
+                <th>Tokens</th>
+                <th>Est. Cost</th>
                 <th>Ground Truth</th>
-                <th>Action</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="traces-table-body">
               <!-- Rendered dynamically -->
             </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: EXECUTION DAG VISUALIZER -->
+    <section class="tab-content" id="tab-dag">
+      <div class="section-header">
+        <div>
+          <h2>Execution DAG & Causal Span Tree</h2>
+          <p class="section-desc">Interactive node-based graph mapping an agent's reasoning flow, tool invocations, observation gates, and anomaly trigger nodes.</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <label style="font-size: 13px; color: var(--text-muted);">Select Trace:</label>
+          <select class="form-select" id="dag-trace-selector" style="min-width: 280px;"></select>
+          <button class="btn btn-secondary btn-sm" id="btn-export-otel-current">Export OTel Spans</button>
+        </div>
+      </div>
+
+      <div class="dag-stats-bar">
+        <div class="dag-stat-pill"><span class="label">Total Nodes:</span> <strong id="dag-node-count">-</strong></div>
+        <div class="dag-stat-pill"><span class="label">Transitions:</span> <strong id="dag-edge-count">-</strong></div>
+        <div class="dag-stat-pill"><span class="label">Cycle Detected:</span> <strong id="dag-cycle-badge">No</strong></div>
+        <div class="dag-stat-pill"><span class="label">Critical Path Depth:</span> <strong id="dag-depth-badge">-</strong></div>
+      </div>
+
+      <div class="dag-container">
+        <div class="dag-canvas-wrap" id="dag-canvas-wrap">
+          <svg id="dag-svg" width="100%" height="600"></svg>
+        </div>
+        <div class="dag-node-inspector" id="dag-node-inspector">
+          <div class="inspector-header">
+            <h4 id="dag-inspector-title">Select a Node</h4>
+            <span class="node-tag" id="dag-inspector-type">NODE</span>
+          </div>
+          <div class="inspector-body" id="dag-inspector-body">
+            <p style="color: var(--text-muted); font-size: 13px;">Click on any node in the graph to inspect thoughts, tool arguments, observations, and anomaly evidence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: TRACE COMPARATOR -->
+    <section class="tab-content" id="tab-compare">
+      <div class="section-header">
+        <div>
+          <h2>Trace Comparator & Behavioral Regression Diff</h2>
+          <p class="section-desc">Side-by-side comparative analysis between two agent runs to detect regressions, divergence points, and cost variances.</p>
+        </div>
+      </div>
+
+      <div class="compare-selector-bar">
+        <div class="compare-col">
+          <label class="form-label">Baseline Run (Trace A):</label>
+          <select class="form-select" id="compare-select-a"></select>
+        </div>
+        <div class="compare-vs">VS</div>
+        <div class="compare-col">
+          <label class="form-label">Target Run (Trace B):</label>
+          <select class="form-select" id="compare-select-b"></select>
+        </div>
+        <button class="btn btn-primary" id="btn-run-comparison" style="margin-top: 20px;">Compare Runs</button>
+      </div>
+
+      <div class="compare-presets">
+        <span style="font-size: 12px; color: var(--text-muted);">Quick Presets:</span>
+        <button class="preset-btn" data-a="trace_01_healthy_devops" data-b="trace_05_looping_exact_search">Healthy vs Looping</button>
+        <button class="preset-btn" data-a="trace_03_healthy_sql" data-b="trace_08_tool_misuse_missing_args">Healthy vs Tool Misuse</button>
+        <button class="preset-btn" data-a="trace_02_healthy_research" data-b="trace_14_goal_drift_recipe_tangent">Healthy vs Goal Drift</button>
+        <button class="preset-btn" data-a="trace_04_healthy_customer_support" data-b="trace_19_unsafe_prompt_injection_jailbreak">Healthy vs Injection</button>
+      </div>
+
+      <div class="compare-kpis" id="compare-kpi-grid" style="display: none;">
+        <div class="kpi-card" id="ckpi-score">
+          <div class="kpi-top"><span class="kpi-label">Score Delta</span></div>
+          <div class="kpi-value" id="ckpi-score-val">-</div>
+          <div class="kpi-sub" id="ckpi-score-sub">Baseline vs Target</div>
+        </div>
+        <div class="kpi-card" id="ckpi-tokens">
+          <div class="kpi-top"><span class="kpi-label">Token Delta</span></div>
+          <div class="kpi-value" id="ckpi-tokens-val">-</div>
+          <div class="kpi-sub" id="ckpi-tokens-sub">Resource delta</div>
+        </div>
+        <div class="kpi-card" id="ckpi-cost">
+          <div class="kpi-top"><span class="kpi-label">Cost Delta</span></div>
+          <div class="kpi-value" id="ckpi-cost-val">-</div>
+          <div class="kpi-sub" id="ckpi-cost-sub">USD expenditure</div>
+        </div>
+        <div class="kpi-card highlight-rose" id="ckpi-div">
+          <div class="kpi-top"><span class="kpi-label">Point of Divergence</span></div>
+          <div class="kpi-value" id="ckpi-div-val">-</div>
+          <div class="kpi-sub" id="ckpi-div-sub">First structural branch</div>
+        </div>
+      </div>
+
+      <div class="table-card" id="compare-table-card" style="display: none; margin-top: 24px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;">Step</th>
+              <th>Trace A (Baseline) Trajectory</th>
+              <th>Trace B (Target) Trajectory</th>
+              <th style="width: 140px;">Status</th>
+              <th>Alignment Notes</th>
+            </tr>
+          </thead>
+          <tbody id="compare-diff-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 5: RUNTIME GUARDRAILS -->
+    <section class="tab-content" id="tab-policies">
+      <div class="section-header">
+        <div>
+          <h2>Runtime Guardrails & Security Policy Engine</h2>
+          <p class="section-desc">Active deterministic security policies intercepting destructive commands, credential leakage, infinite loops, and spend caps.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-primary btn-sm" id="btn-run-policy-audit">Audit Benchmark Traces</button>
+        </div>
+      </div>
+
+      <div class="policies-grid" id="policies-grid"></div>
+
+      <div class="policy-audit-box" id="policy-audit-box" style="display: none; margin-top: 28px;">
+        <div class="section-header">
+          <div>
+            <h3>Guardrail Benchmark Audit Results</h3>
+            <p class="section-desc" id="policy-audit-summary">Evaluating all 20 traces against active policies...</p>
+          </div>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Trace ID</th>
+                <th>Compliance Status</th>
+                <th>Total Violations</th>
+                <th>Critical Breaches</th>
+                <th>Triggered Guardrails</th>
+              </tr>
+            </thead>
+            <tbody id="policy-audit-body"></tbody>
           </table>
         </div>
       </div>

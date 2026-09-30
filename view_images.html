@@ -25,10 +25,7 @@
       line-height: 1.6;
       padding: 30px 20px;
     }
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1300px; margin: 0 auto; }
     header {
       border-bottom: 1px solid var(--card-border);
       padding-bottom: 24px;
@@ -39,19 +36,8 @@
       align-items: center;
       gap: 16px;
     }
-    h1 {
-      font-size: 26px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .subtitle {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-top: 4px;
-    }
+    h1 { font-size: 26px; font-weight: 700; color: #fff; }
+    .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -64,21 +50,10 @@
       transition: all 0.2s ease;
       cursor: pointer;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #0284c7, #06b6d4);
-      color: #fff;
-      border: none;
-    }
+    .btn-primary { background: linear-gradient(135deg, #0284c7, #06b6d4); color: #fff; border: none; }
     .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-    }
-    .btn-secondary:hover {
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
-    }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-main); }
+    .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
     .banner-card {
       background: var(--bg-card);
       border: 1px solid var(--card-border);
@@ -87,33 +62,11 @@
       margin-bottom: 36px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
-    .banner-img-wrap {
-      width: 100%;
-      background: #020617;
-      text-align: center;
-    }
-    .banner-img-wrap img {
-      width: 100%;
-      max-height: 520px;
-      object-fit: contain;
-      display: block;
-    }
-    .banner-info {
-      padding: 20px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
-      gap: 28px;
-    }
-    @media (max-width: 640px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+    .banner-img-wrap { width: 100%; background: #020617; text-align: center; }
+    .banner-img-wrap img { width: 100%; max-height: 520px; object-fit: contain; display: block; }
+    .banner-info { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(560px, 1fr)); gap: 28px; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
     .card {
       background: var(--bg-card);
       border: 1px solid var(--card-border);
@@ -136,39 +89,11 @@
       border-bottom: 1px solid var(--card-border);
       cursor: pointer;
     }
-    .card-img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      display: block;
-      transition: transform 0.3s ease;
-    }
-    .card-img-wrap:hover img {
-      transform: scale(1.02);
-    }
-    .card-body {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .card-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-    .card-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      flex: 1;
-    }
-    .card-actions {
-      display: flex;
-      gap: 10px;
-    }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+    .card-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+    .card-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .card-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; flex: 1; }
+    .card-actions { display: flex; gap: 10px; }
   </style>
 </head>
 <body>
@@ -188,85 +113,111 @@
     <!-- ARCHITECTURE BLUEPRINT -->
     <div class="banner-card">
       <div class="banner-img-wrap">
-        <a href="architecture_diagram.png" target="_blank">
-          <img src="architecture_diagram.png" alt="Architecture Diagram">
-        </a>
+        <a href="architecture_diagram.png" target="_blank"><img src="architecture_diagram.png" alt="Architecture Diagram"></a>
       </div>
       <div class="banner-info">
         <div>
           <h2 style="font-size: 18px; color: #fff;">1. System Architecture Blueprint</h2>
-          <p class="subtitle">Full end-to-end telemetry pipeline: Ingestion -> 5 Parallel Detectors -> Multi-Pillar Scoring -> Live UI & Standalone Reporting</p>
+          <p class="subtitle">End-to-End Pipeline: Ingestion -> 5 Parallel Detectors -> Profiler & DAG -> Guardrails -> Web & OTel Export</p>
         </div>
         <a href="architecture_diagram.png" target="_blank" class="btn btn-secondary">Open High-Res</a>
       </div>
     </div>
 
     <!-- SCREENSHOTS GRID -->
-    <h2 style="font-size: 20px; color: #fff; margin-bottom: 18px;">Live Dashboard Captures & Showcase</h2>
+    <h2 style="font-size: 20px; color: #fff; margin-bottom: 18px;">Live Dashboard Captures & Advanced Features</h2>
     <div class="grid">
-      <!-- Screenshot 1 -->
+      <!-- Screenshot 1: Overview -->
       <div class="card">
         <div class="card-img-wrap" onclick="window.open('screenshots/real_overview.png', '_blank')">
-          <img src="screenshots/real_overview.png" alt="Overview Dashboard Screenshot">
+          <img src="screenshots/real_overview.png" alt="Overview Dashboard">
         </div>
         <div class="card-body">
-          <div class="card-title">2. Live Benchmark Overview & KPI Metrics</div>
-          <p class="card-desc">100% Precision & Recall KPIs, 20 test traces distribution, average 0.24 ms latency, and individual detector breakdown cards.</p>
-          <div class="card-actions">
-            <a href="screenshots/real_overview.png" target="_blank" class="btn btn-secondary">View Full Size</a>
-          </div>
+          <div class="card-title">2. Live Overview: Token Economics & Latency Waterfall</div>
+          <p class="card-desc">100% Precision/Recall KPIs, token expenditure ($0.0332 USD), loop inefficiency detection (463 wasted tokens), and latency breakdown waterfall.</p>
+          <div class="card-actions"><a href="screenshots/real_overview.png" target="_blank" class="btn btn-secondary">View Full Size</a></div>
         </div>
       </div>
 
-      <!-- Screenshot 2 -->
+      <!-- Screenshot 2: DAG Visualizer -->
+      <div class="card">
+        <div class="card-img-wrap" onclick="window.open('screenshots/real_dag_visualizer.png', '_blank')">
+          <img src="screenshots/real_dag_visualizer.png" alt="Execution DAG Visualizer">
+        </div>
+        <div class="card-body">
+          <div class="card-title">3. Interactive Execution DAG & Causal Span Tree</div>
+          <p class="card-desc">Node-based graph rendering agent planning, tool invocations, observation gates, and red pulsing anomaly callouts with interactive payload inspection.</p>
+          <div class="card-actions"><a href="screenshots/real_dag_visualizer.png" target="_blank" class="btn btn-secondary">View Full Size</a></div>
+        </div>
+      </div>
+
+      <!-- Screenshot 3: Trace Comparator -->
+      <div class="card">
+        <div class="card-img-wrap" onclick="window.open('screenshots/real_trace_comparator.png', '_blank')">
+          <img src="screenshots/real_trace_comparator.png" alt="Trace Comparator Diff">
+        </div>
+        <div class="card-body">
+          <div class="card-title">4. Trace Comparator & Behavioral Regression Diff</div>
+          <p class="card-desc">Side-by-side run comparison identifying the exact divergence step, score delta, and cost variance between baseline and failing runs.</p>
+          <div class="card-actions"><a href="screenshots/real_trace_comparator.png" target="_blank" class="btn btn-secondary">View Full Size</a></div>
+        </div>
+      </div>
+
+      <!-- Screenshot 4: Runtime Guardrails -->
+      <div class="card">
+        <div class="card-img-wrap" onclick="window.open('screenshots/real_guardrails.png', '_blank')">
+          <img src="screenshots/real_guardrails.png" alt="Runtime Guardrails Policy Manager">
+        </div>
+        <div class="card-body">
+          <div class="card-title">5. Runtime Guardrails & Security Policy Engine</div>
+          <p class="card-desc">Active deterministic policy checkpoints blocking destructive commands, credential leakage, and infinite loops with real-time toggle switches.</p>
+          <div class="card-actions"><a href="screenshots/real_guardrails.png" target="_blank" class="btn btn-secondary">View Full Size</a></div>
+        </div>
+      </div>
+
+      <!-- Screenshot 5: Trace Explorer -->
       <div class="card">
         <div class="card-img-wrap" onclick="window.open('screenshots/real_trace_explorer.png', '_blank')">
-          <img src="screenshots/real_trace_explorer.png" alt="Trace Explorer Screenshot">
+          <img src="screenshots/real_trace_explorer.png" alt="Trace Explorer Table">
         </div>
         <div class="card-body">
-          <div class="card-title">3. Trace Explorer & Multi-Domain Telemetry Table</div>
-          <p class="card-desc">Filterable table containing all 20 agent traces across SRE, SQL, CRM, Research, and SysAdmin domains with live search.</p>
-          <div class="card-actions">
-            <a href="screenshots/real_trace_explorer.png" target="_blank" class="btn btn-secondary">View Full Size</a>
-          </div>
+          <div class="card-title">6. Trace Explorer Table with Economics & OTel Export</div>
+          <p class="card-desc">Filterable multi-domain telemetry table featuring token counts, USD cost attribution, and direct OpenTelemetry GenAI JSON export.</p>
+          <div class="card-actions"><a href="screenshots/real_trace_explorer.png" target="_blank" class="btn btn-secondary">View Full Size</a></div>
         </div>
       </div>
 
-      <!-- Screenshot 3 -->
+      <!-- Screenshot 6: Step Inspector Modal -->
       <div class="card">
         <div class="card-img-wrap" onclick="window.open('screenshots/real_trace_inspector.png', '_blank')">
-          <img src="screenshots/real_trace_inspector.png" alt="Trace Inspector Screenshot">
+          <img src="screenshots/real_trace_inspector.png" alt="Step Inspector Modal">
         </div>
         <div class="card-body">
-          <div class="card-title">4. Deep-Dive Step Inspector & Deduction Ledger</div>
+          <div class="card-title">7. Deep-Dive Step Inspector & Deduction Ledger</div>
           <p class="card-desc">Chronological timeline showing thought thoughts, tool calls, JSON arguments, observation diffs, and explainable deductions.</p>
-          <div class="card-actions">
-            <a href="screenshots/real_trace_inspector.png" target="_blank" class="btn btn-secondary">View Full Size</a>
-          </div>
+          <div class="card-actions"><a href="screenshots/real_trace_inspector.png" target="_blank" class="btn btn-secondary">View Full Size</a></div>
         </div>
       </div>
 
-      <!-- Screenshot 4 -->
+      <!-- Screenshot 7: Live Playground -->
       <div class="card">
         <div class="card-img-wrap" onclick="window.open('screenshots/real_live_playground.png', '_blank')">
-          <img src="screenshots/real_live_playground.png" alt="Live Playground Screenshot">
+          <img src="screenshots/real_live_playground.png" alt="Live Playground Studio">
         </div>
         <div class="card-body">
-          <div class="card-title">5. Interactive Live Playground Execution Studio</div>
-          <p class="card-desc">JSON editor with pre-loaded edge-case presets. Click 'Run Evaluation' for instantaneous sub-millisecond safety scoring.</p>
-          <div class="card-actions">
-            <a href="screenshots/real_live_playground.png" target="_blank" class="btn btn-secondary">View Full Size</a>
-          </div>
+          <div class="card-title">8. Interactive Live Playground Execution Studio</div>
+          <p class="card-desc">On-the-fly execution studio for testing custom JSON agent traces with instant sub-millisecond evaluation.</p>
+          <div class="card-actions"><a href="screenshots/real_live_playground.png" target="_blank" class="btn btn-secondary">View Full Size</a></div>
         </div>
       </div>
 
-      <!-- Screenshot 5 -->
+      <!-- Screenshot 8: LinkedIn Showcase Banner -->
       <div class="card" style="grid-column: 1 / -1;">
         <div class="card-img-wrap" style="height: 380px;" onclick="window.open('linkedin_post_visual.png', '_blank')">
           <img src="linkedin_post_visual.png" alt="LinkedIn Post Visual Banner">
         </div>
         <div class="card-body">
-          <div class="card-title">6. LinkedIn Showcase Banner (16:9 4K Quality)</div>
+          <div class="card-title">9. LinkedIn Showcase Banner (16:9 4K Quality)</div>
           <p class="card-desc">Professional visual designed for the LinkedIn post, featuring key architectural pillars, benchmark stats, and telemetry highlights.</p>
           <div class="card-actions">
             <a href="linkedin_post_visual.png" target="_blank" class="btn btn-secondary">View Full Size</a>
