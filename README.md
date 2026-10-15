@@ -1,4 +1,4 @@
-# Agentic AI and ML Monitoring & Evaluation Harness
+# Agentic AI  Monitoring & Evaluation Harness
 
 A lightweight, deterministic observability, behavioral evaluation, and safety harness designed to inspect, detect, and flag problematic behaviors in autonomous AI agents before production deployment.
 
@@ -272,7 +272,7 @@ agentic-ai-monitoring-harness/
 ## LinkedIn Post & Visuals
 
 ![LinkedIn Project Showcase Banner](linkedin_post_visual.png)
-all
+
 A comprehensive ready-to-publish LinkedIn post has been drafted for this project. Check out **[LINKEDIN_POST.md](LINKEDIN_POST.md)** for the copy-paste-ready text, engineering talking points, and hashtag recommendations.
 
 ---
